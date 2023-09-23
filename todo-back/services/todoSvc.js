@@ -1,14 +1,5 @@
-const { Pool } = require('pg');
+const pool = require('../db');
 const config = require('../config'); // Assuming you have a config file
-
-// PostgreSQL connection configuration
-const pool = new Pool({
-  connectionString: config.db_pgsql, // PostgreSQL connection string
-});
-
-pool.on('error', (err, client) => {
-  console.error('Error occurred in PostgreSQL client:', err);
-});
 
 // Function to retrieve todos
 async function retrieveTodos() {
@@ -51,5 +42,15 @@ async function updateTask(){
     console.error('Error retrieving data:', error);
   }
 }
+async function deleteTodo(todoId){
+  const client = await pool.connect();
+  const query = 'Delete from tasks where id = $1';
+  const results = await client.query(query,[todoId]);
+  client.release();
+  return results;
+}
 
-module.exports = retrieveTodos;
+
+  module.exports = {retrieveTodos
+    ,deleteTodo,
+    updateTask}

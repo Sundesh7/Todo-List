@@ -1,22 +1,61 @@
 /* App.css */
 /* Center the content horizontally and vertically */
+body{
+  background-image: url("https://wallpapers.com/images/hd/aesthetic-anime-background-yg9oktnebpzw0btw.jpg") ;
+  background-size: cover; /* Adjust to control how the image covers the container */
+  background-repeat: no-repeat; /* Adjust as needed */
+  height: 300px; /* Set a fixed or calculated height for your component */
+  overflow: auto;
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  font-family: Arial, sans-serif;
+}
+body::before {
+  content: "";
+  background: inherit;
+  filter: blur(6px); /* Adjust the blur radius as needed */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Place the blurred background behind the content */
+}
 .App {
   display: flex;
   flex-direction: column; /* Stack children vertically */
   align-items: center; /* Center horizontally */
   justify-content: center; /* Center vertically */
-  height: 100vh; /* This ensures the content takes up the full viewport height */
+  min-width: 100vh; /* This ensures the content takes up the full viewport height */
 }
 
 /* Add any other table styles here */
 table {
-  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.6); /* Adjust the background color and opacity as needed */
+  padding: 20px;
+  border-radius: 10px;
+  backdrop-filter: blur(8px); /* Adjust the blur radius as needed */
+  border: 1px solid black;
   width: 60%;
-  height: 50;
+  height: 50%;
+}
+.button {
+  background-color: #050404; /* Orange */
+  color: rgb(250, 250, 250);
+  padding: 7px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
 }
 
+.button:hover {
+  background-color: #d37254; /* Slightly darker orange on hover */
+  color:#050404
+}
 table th, table td {
-  border: 1px solid #ccc;
+  border: 1px solid black;
   padding: 8px;
   text-align: center; /* Center the content horizontally within the cells */
 }
@@ -25,11 +64,18 @@ table th {
   font-weight: bold; /* Make the table header text bold */
 }
 
-/* Style the heading */
 .heading {
-  font-size: 34px; /* Adjust the font size as needed */
-  margin-bottom: 10px; /* Add some spacing between the heading and the table */
+  font-size: 36px;
+  color: rgb(19, 10, 10); /* Retro pink text color */
+  text-shadow: 1px 1px 0px #ddd9d9, 2px 3px 0px #333; /* Simulated 3D effect */
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 5px; /* Wider letter spacing */
+  background-color: rgba(113, 91, 97, 0.3); /* Adjust the background color and opacity as needed */
+  border-radius: 10px;
+  padding-inline: 22%;
 }
+/* Hover effect for the heading */
+
 .completed {
   text-decoration: line-through;
 }
