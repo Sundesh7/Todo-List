@@ -1,0 +1,35 @@
+/* App.css */
+/* Center the content horizontally and vertically */
+.App {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  height: 100vh; /* This ensures the content takes up the full viewport height */
+}
+
+/* Add any other table styles here */
+table {
+  border: 1px solid #ccc;
+  width: 60%;
+  height: 50;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center; /* Center the content horizontally within the cells */
+}
+
+table th {
+  font-weight: bold; /* Make the table header text bold */
+}
+
+/* Style the heading */
+.heading {
+  font-size: 34px; /* Adjust the font size as needed */
+  margin-bottom: 10px; /* Add some spacing between the heading and the table */
+}
+.completed {
+  text-decoration: line-through;
+}
