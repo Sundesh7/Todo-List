@@ -1,25 +1,25 @@
 /* App.css */
 /* Center the content horizontally and vertically */
-body{
+body {
   background-image: url("https://wallpapers.com/images/hd/aesthetic-anime-background-yg9oktnebpzw0btw.jpg") ;
-  background-size: cover; /* Adjust to control how the image covers the container */
-  background-repeat: no-repeat; /* Adjust as needed */
-  height: 300px; /* Set a fixed or calculated height for your component */
-  overflow: auto;
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
+  background-size:100% 100%; /* Use 'cover' to ensure the image covers the viewport */
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
   font-family: Arial, sans-serif;
+  height: auto;
 }
+
 body::before {
   content: "";
   background: inherit;
-  filter: blur(6px); /* Adjust the blur radius as needed */
-  position: absolute;
+  filter: blur(6px);
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Place the blurred background behind the content */
+  z-index: -1;
 }
 .App {
   display: flex;
@@ -40,6 +40,8 @@ table {
   height: 50%;
 }
 .button {
+  font-weight: normal !important;
+  text-decoration: none !important; 
   background-color: #050404; /* Orange */
   color: rgb(250, 250, 250);
   padding: 7px 12px;
@@ -75,7 +77,17 @@ table th {
   padding-inline: 22%;
 }
 /* Hover effect for the heading */
-
+.edit{
+  font-size: 36px;
+  color: rgb(19, 10, 10); /* Retro pink text color */
+  text-shadow: 1px 1px 0px #ddd9d9, 2px 3px 0px #333; /* Simulated 3D effect */
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 5px; /* Wider letter spacing */
+  background-color: rgba(113, 91, 97, 0.3); /* Adjust the background color and opacity as needed */
+  border-radius: 10px;
+  padding-inline: 22%;
+  text-align: center
+}
 .completed {
   text-decoration: line-through;
 }

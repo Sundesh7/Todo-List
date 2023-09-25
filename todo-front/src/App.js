@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'; // Import Routes
+import { createBrowserHistory } from 'history'; 
 import './App.css';
+import EditTask from './EditTask'; // Import the EditTask component
 const apiUrl = 'http://localhost:3300/todos';
+
+const history = createBrowserHistory(); 
 function App() {
   const [tasks, setTasks] = useState([]);
 
@@ -73,8 +78,11 @@ function App() {
       // Handle the error (e.g., show an error message to the user)
     }
   };
-
   return (
+    <Router>
+      <Routes>
+        <Route path="/edit/:taskId" element={<EditTask />} />
+      </Routes>
     <div className="App">
       <h1 className="heading">To Do List</h1>
       <table>
@@ -104,12 +112,18 @@ function App() {
               </td>
               <td>
                 <button onClick={() => handleDelete(task.id)} className='button'>Delete</button>
+                &nbsp;
+                <a href={`/edit/${task.id}`} className='button'>
+                  Update
+                </a>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
+    
+    </Router>
   );
 }
 
