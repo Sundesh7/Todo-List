@@ -90,7 +90,7 @@ const AddTask = () => {
         </tbody>
       </table>
       <br />
-      <button onClick={()=>addTodo({task:task})}  className='button' style={{color:'white'}}>シ Add</button>
+      <button onClick={()=>addTodo({task:task})}  className='button'  style={{color:'white'}}>シ Add</button>
     </div>
   );
 };

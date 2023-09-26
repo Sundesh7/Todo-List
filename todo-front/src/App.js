@@ -21,7 +21,9 @@ function App() {
         console.error('Error fetching data:', error);
       });
   }, []);
-
+  const scrollToTop = () => {
+    window.scrollTo(0, 0); // Scroll to the top of the page
+  };
   return (
     <Router>
     <Routes>
@@ -45,7 +47,7 @@ function App() {
           {tasks.map((task) => (
              console.log(tasks),
             <tr key={task.id}>
-              <td className={task.completed ? 'completed' : ''}> <Link to={`/edit/${task.id}`} style={{ textDecoration: 'none', color: 'blue' }}> {task.title}
+              <td className={task.completed ? 'completed' : ''} onClick={scrollToTop}> <Link to={`/edit/${task.id}`} style={{ textDecoration: 'none', color: 'blue' }}> {task.title}
                 </Link> </td>
               <td className={task.completed ? 'completed' : ''}>{task.description}</td>
               <td className={task.completed ? 'completed' : ''}>
@@ -66,7 +68,7 @@ function App() {
           ))}
         </tbody>
       </table>
-      <button className='button'> <Link to={`/addTask`} style={{ textDecoration: 'none', color: 'white' }}> Add Task </Link></button>
+      <button className='button' onClick={scrollToTop}> <Link to={`/addTask`} style={{ textDecoration: 'none', color: 'white' }} > Add Task </Link></button>
     </div>
     </Router>
   );
