@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../App.css';
+import addTodo from './addService';
 
 const AddTask = () => {
   
@@ -7,14 +8,15 @@ const AddTask = () => {
   const [task, setTask] = useState({  
     title: '',
     description: '',
-    dueDate: '',
-    dueTime: '',
+    due_date: '',
+    due_time: '',
     completed: true,
   });
   
   // Function to handle changes in input fields
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    console.log(name,value,type,checked)
     // Handle checkbox separately
     if (type === 'checkbox') {
       setTask({
@@ -63,16 +65,16 @@ const AddTask = () => {
             <td>
               <input
                 type="date"
-                name="dueDate"
-                value={task.dueDate}
+                name="due_date"
+                value={task.due_date}
                 onChange={handleInputChange}
               />
             </td>
             <td>
               <input
                 type="time"
-                name="dueTime"
-                value={task.dueTime}
+                name="due_time"
+                value={task.due_time}
                 onChange={handleInputChange}
               />
             </td>
@@ -88,7 +90,7 @@ const AddTask = () => {
         </tbody>
       </table>
       <br />
-      <button  className='button' style={{color:'white'}}>シ Add</button>
+      <button onClick={()=>addTodo({task:task})}  className='button' style={{color:'white'}}>シ Add</button>
     </div>
   );
 };

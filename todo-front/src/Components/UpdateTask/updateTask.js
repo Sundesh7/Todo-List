@@ -10,7 +10,7 @@ const EditTask = () => {
   const [task, setTask] = useState({  
     title: '',
     description: '',
-    dueDate: '',
+    due_date: '',
     dueTime: '',
     completed: true,
   });
@@ -103,16 +103,16 @@ const EditTask = () => {
             <td>
               <input
                 type="date"
-                name="dueDate"
-                value={task.dueDate}
+                name="due_date"
+                value={task.due_date}
                 onChange={handleInputChange}
               />
             </td>
             <td>
               <input
                 type="time"
-                name="dueTime"
-                value={task.dueTime}
+                name="due_time"
+                value={task.due_time}
                 onChange={handleInputChange}
               />
             </td>

@@ -18,4 +18,4 @@ const addTodo = async ({task}) => {
       console.error('Error:', error);
     }
 };
-export default UpdateTodo;
+export default addTodo;

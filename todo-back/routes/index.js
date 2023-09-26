@@ -48,14 +48,16 @@ router.get('/todos/:id', async (req, res) => {
     });
     router.put('/todo', async (req, res) => {
       try {
-        const taskId = req.params.id;
         console.log('body',req.body)
-        //const { title,description,due_date,due_time,completed } = req.body;
-        //console.log(title,description,due_date,due_time,completed)
-        //Update the task in the database
-        //const updateTaskQuery = 'UPDATE tasks SET title=$1, completed = $2, due_date = $3, due_time = $4, description = $5 WHERE id = $6';
-        //await pool.query(updateTaskQuery, [title,completed,due_date,due_time,description, taskId]);
-        res.status(200).json({ message: 'Task updated successfully' });
+        const { title,description,due_date,
+          due_time,completed } = req.body;
+        console.log(title,description,due_date,due_time,completed)
+        const updateTaskQuery = `
+  INSERT INTO tasks (title, description, due_date, due_time, completed)
+  VALUES ($1, $2, $3, $4, $5)
+`;
+await pool.query(updateTaskQuery, [title, description, due_date, due_time, completed]);
+res.status(200).json({ message: 'Task updated successfully' });
       } catch (error) {
         console.error('Error updating task:', error);
         res.status(500).json({ error: 'An error occurred while updating the task' });
