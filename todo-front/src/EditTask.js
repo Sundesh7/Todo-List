@@ -1,11 +1,96 @@
-// EditTask.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { useParams } from 'react-router-dom';
+
 const EditTask = () => {
+  const { taskId } = useParams();
+  
+  // Initialize task state with default values
+  const [task, setTask] = useState({
+    title: '',
+    description: '',
+    dueDate: '',
+    dueTime: '',
+    completed: true,
+  });
+
+  // Use a separate useEffect for component initialization
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3300/todos/${taskId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        // Check if data has the expected properties before setting state
+        if (
+          'title' in data[0] &&
+          'description' in data[0] &&
+          'due_date' in data[0] &&
+          'due_time' in data[0] &&
+          'completed' in data[0]
+        ) {
+          setTask(data[0]);
+        } else {
+          console.error('Data from API does not have expected properties:', data[0]);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  }, [taskId]);
+
+  // Function to handle changes in input fields
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    // Handle checkbox separately
+    if (type === 'checkbox') {
+      setTask({
+        ...task,
+        [name]: checked,
+      });
+    } else {
+      setTask({
+        ...task,
+        [name]: value,
+      });
+    }
+  };
+
+  // Function to handle updating the task on the server
+  const handleUpdate = async () => {
+    try {
+      const response = await fetch(`http://localhost:3300/todos/${taskId}`, {
+        method: 'PUT', // Use the appropriate HTTP method for updating
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(task),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update task');
+      }
+
+      // Handle success (e.g., show a success message or redirect)
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
+  console.log(task);
   return (
     <div className="App">
-      
-      {/* Add your edit task form or content here */}
       <h2 className='edit'>Edit Task</h2>
       <table>
         <thead>
@@ -13,28 +98,59 @@ const EditTask = () => {
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
+            <th>Due Time</th>
             <th>Completed</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
-              <td>sdsd </td>
-              <td>sds</td>
-              <td>sds</td>
-              <td>sds</td>
-              <td>
-                <button className='button'>Delete</button>
-                &nbsp;
-                <a className='button'>
-                  Update
-                </a>
-              </td>
-
+          <tr>
+            <td>
+              <input
+                type="text"
+                name="title"
+                value={task.title}
+                onChange={handleInputChange}
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="description"
+                value={task.description}
+                onChange={handleInputChange}
+              />
+            </td>
+            <td>
+              <input
+                type="date"
+                name="dueDate"
+                value={task.dueDate}
+                onChange={handleInputChange}
+              />
+            </td>
+            <td>
+              <input
+                type="time"
+                name="dueTime"
+                value={task.dueTime}
+                onChange={handleInputChange}
+              />
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                name="completed"
+                checked={task.completed}
+                onChange={handleInputChange}
+              />
+            </td>
+          </tr>
         </tbody>
       </table>
-      {/* Your edit task form components go here */}
+      <br />
+      <button className='button'>Update</button>
     </div>
   );
-}
+};
 
 export default EditTask;

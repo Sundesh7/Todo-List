@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'; // Import Routes
-import { createBrowserHistory } from 'history'; 
+import { BrowserRouter as Router, Route, Routes, Link, useParams } from 'react-router-dom'; // Import useParams
 import './App.css';
-import EditTask from './EditTask'; // Import the EditTask component
+import EditTask from './EditTask';
+
+
+
 const apiUrl = 'http://localhost:3300/todos';
 
-const history = createBrowserHistory(); 
 function App() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    // Define the API URL for your PostgreSQL server
-
-    // Use the fetch method to make a GET request to retrieve tasks
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
@@ -27,7 +25,6 @@ function App() {
     // Find the task to update in the state
     const updatedTasks = tasks.map((task) => {
       if (task.id === taskId) {
-        console.log(taskId,isChecked)
         // Toggle the completed status based on isChecked
         return {
           ...task,
@@ -50,7 +47,6 @@ function App() {
         },
         body: { completed: isChecked },
       });
-
       if (!response.ok) {
         console.error('Error updating task:', response.statusText);
       }
@@ -80,10 +76,10 @@ function App() {
   };
   return (
     <Router>
-      <Routes>
-        <Route path="/edit/:taskId" element={<EditTask />} />
-      </Routes>
-    <div className="App">
+    <Routes>
+      <Route path="/edit/:taskId" element={<EditTask />} />
+    </Routes>
+      <div className="App">
       <h1 className="heading">To Do List</h1>
       <table>
         <thead>
@@ -91,18 +87,22 @@ function App() {
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
+            <th>Due Time</th>
             <th>Completed</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {tasks.map((task) => (
+             
             <tr key={task.id}>
-              <td className={task.completed ? 'completed' : ''}>{task.title}</td>
+              <td className={task.completed ? 'completed' : ''}> <Link to={`/edit/${task.id}`} > <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>{task.title}</span> 
+                </Link> </td>
               <td className={task.completed ? 'completed' : ''}>{task.description}</td>
               <td className={task.completed ? 'completed' : ''}>
                 {new Date(task.due_date).toLocaleDateString()}
               </td>
+              <td className={task.completed ? 'completed' : ''}>{task.due_time}</td>
               <td>
                 <input
                   type="checkbox"
@@ -111,18 +111,13 @@ function App() {
                 />
               </td>
               <td>
-                <button onClick={() => handleDelete(task.id)} className='button'>Delete</button>
-                &nbsp;
-                <a href={`/edit/${task.id}`} className='button'>
-                  Update
-                </a>
+                <button onClick={() => handleDelete(task.id)} className='xbutton'>X</button> 
               </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-    
     </Router>
   );
 }

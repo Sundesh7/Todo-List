@@ -10,22 +10,28 @@ router.get('/todos', async (req, res) => {
     console.log(result)
     res.json(result);
   });
-  router.put('/todos/:id', async (req, res) => {
-    try {
-      const taskId = req.params.id;
-      console.log('body',req.body)
-      //const { completed } = req.body;
-      //console.log(req)
-      // Update the task in the database
-      const updateTaskQuery = 'UPDATE tasks SET completed = $1 WHERE id = $2';
-      await pool.query(updateTaskQuery, [completed, taskId]);
-  
-      res.status(200).json({ message: 'Task updated successfully' });
-    } catch (error) {
-      console.error('Error updating task:', error);
-      res.status(500).json({ error: 'An error occurred while updating the task' });
-    }
+
+router.get('/todos/:id', async (req, res) => {
+    let result = await handlers.ListTodo(req.params.id);
+    console.log(result)
+    res.json(result);
   });
+  router.put('/todos/:id', async (req, res) => {
+      try {
+        const taskId = req.params.id;
+        console.log('body',req)
+        //const { completed } = req.body;
+        //console.log(req)
+        // Update the task in the database
+        const updateTaskQuery = 'UPDATE tasks SET completed = $1 WHERE id = $2';
+        await pool.query(updateTaskQuery, [completed, taskId]);
+    
+        res.status(200).json({ message: 'Task updated successfully' });
+      } catch (error) {
+        console.error('Error updating task:', error);
+        res.status(500).json({ error: 'An error occurred while updating the task' });
+      }
+    });
   router.delete('/todos/:id',async (req, res) => {
     try{
       const todoId = req.params.id;

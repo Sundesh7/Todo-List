@@ -22,6 +22,26 @@ async function retrieveTodos() {
     console.error('Error retrieving data:', error);
   }
 }
+async function retrieveTodo(taskId) {
+  try {
+    // Connect to the PostgreSQL database
+    const client = await pool.connect();
+
+    // Query to retrieve all todos from a "todos" table (replace with your actual table name)
+    const query = 'SELECT * FROM tasks where id = $1';
+    
+    // Execute the query
+    const result = await client.query(query,[taskId]);
+
+    // Release the client back to the pool
+    client.release();
+
+    // Process the retrieved rows
+    return result.rows;
+  } catch (error) {
+    console.error('Error retrieving data:', error);
+  }
+}
 async function updateTask(){
   try {
     // Connect to the PostgreSQL database
@@ -51,6 +71,9 @@ async function deleteTodo(todoId){
 }
 
 
-  module.exports = {retrieveTodos
-    ,deleteTodo,
-    updateTask}
+  module.exports = {
+    retrieveTodos,
+    deleteTodo,
+    retrieveTodo,
+    updateTask
+  }
