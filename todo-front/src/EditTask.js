@@ -50,6 +50,28 @@ const EditTask = () => {
 
     fetchData();
   }, [taskId]);
+  const UpdateTodo = async () => {
+    console.log(task)
+      try {
+        const response = await fetch(`http://localhost:3300/todo/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(task), 
+      });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        // Check if data has the expected properties before setting state
+         
+      } catch (error) {
+        console.error('Error:', error);
+      }
+  };
+
 
   // Function to handle changes in input fields
   const handleInputChange = (e) => {
@@ -68,27 +90,6 @@ const EditTask = () => {
     }
   };
 
-  // Function to handle updating the task on the server
-  const handleUpdate = async () => {
-    try {
-      const response = await fetch(`http://localhost:3300/todos/${taskId}`, {
-        method: 'PUT', // Use the appropriate HTTP method for updating
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(task),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update task');
-      }
-
-      // Handle success (e.g., show a success message or redirect)
-    } catch (error) {
-      console.error('Error updating task:', error);
-    }
-  };
-  console.log(task);
   return (
     <div className="App">
       <h2 className='edit'>Edit Task</h2>
@@ -148,7 +149,7 @@ const EditTask = () => {
         </tbody>
       </table>
       <br />
-      <button className='button'>Update</button>
+      <button onClick={UpdateTodo} className='button'>Update</button>
     </div>
   );
 };

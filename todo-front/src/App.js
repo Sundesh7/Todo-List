@@ -45,7 +45,7 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: { completed: isChecked },
+        body: JSON.stringify({ completed: isChecked }), 
       });
       if (!response.ok) {
         console.error('Error updating task:', response.statusText);
