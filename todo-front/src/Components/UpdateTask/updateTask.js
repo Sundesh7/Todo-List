@@ -11,7 +11,7 @@ const EditTask = () => {
     title: '',
     description: '',
     due_date: '',
-    dueTime: '',
+    due_time: '',
     completed: true,
   });
 

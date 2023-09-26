@@ -64,6 +64,52 @@ table {
   background-color: #d37254; /* Slightly darker orange on hover */
   color:#050404
 }
+#heading{
+  transform: translate(-1%, 1%);
+}
+
+.login {
+  position: fixed;
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  background-color: rgba(255, 255, 255, 0.4); /* Transparent background */
+  backdrop-filter: blur(10px); /* Adjust the blur amount as needed */
+  padding: 100px;
+  width: 200px;
+  height: 200px;
+  padding-top: 10px;
+  padding-bottom: 160px;
+  border-radius: 18px;
+  border: 1px solid #d37254;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* Add a shadow for depth */
+}
+.Fields{
+  position: relative;
+}
+.Fields input {
+  margin-bottom: 10px;
+  text-align: center;
+  width: 310px;
+  height: 25px;
+  padding: 10px;
+  border: 1px solid #ea6565;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color:  rgba(255, 255, 255, 0.8);
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.Fields input:focus{
+  border-color: #007bff; /* Change border color when focused */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow on focus */
+}
+
 table th, table td {
   border: 1px solid black;
   padding: 8px;

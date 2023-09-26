@@ -47,7 +47,7 @@ function App() {
           {tasks.map((task) => (
              console.log(tasks),
             <tr key={task.id}>
-              <td className={task.completed ? 'completed' : ''} onClick={scrollToTop}> <Link to={`/edit/${task.id}`} style={{ textDecoration: 'none', color: 'blue' }}> {task.title}
+              <td className={task.completed ? 'completed' : ''} onClick={scrollToTop}> <Link to={`/edit/${task.id}`} style={{ textDecoration: 'none', color: 'darkblue' }}>{task.title}
                 </Link> </td>
               <td className={task.completed ? 'completed' : ''}>{task.description}</td>
               <td className={task.completed ? 'completed' : ''}>

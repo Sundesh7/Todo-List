@@ -13,7 +13,6 @@ const addTodo = async ({task}) => {
         throw new Error('Network response was not ok');
       }
       window.location.href = 'http://localhost:3000/'
-      // Check if data has the expected properties before setting state
        
     } catch (error) {
       console.error('Error:', error);
