@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useParams } from 'react-router-dom'; // Import useParams
 import './App.css';
-import EditTask from './EditTask';
-
-
+import EditTask from './Components/UpdateTask/updateTask';
+import handleDelete from './Components/deleteTask'
+import handleCheckboxToggle from './Components/checkboxToggle';
+import AddTask from './Components/AddTask/addTask';
 
 const apiUrl = 'http://localhost:3300/todos';
 
@@ -21,63 +22,11 @@ function App() {
       });
   }, []);
 
-  const handleCheckboxToggle = async (taskId, isChecked) => {
-    // Find the task to update in the state
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === taskId) {
-        // Toggle the completed status based on isChecked
-        return {
-          ...task,
-          completed: isChecked,
-        };
-      }
-      return task;
-    });
-
-    // Update the state to reflect the new completion status immediately
-    setTasks(updatedTasks);
-
-    // Send a request to update the database with the new completion status
-    try {
-      updatedTasks.find((task) => task.id === taskId);
-      const response = await fetch(`http://localhost:3300/todos/${taskId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ completed: isChecked }), 
-      });
-      if (!response.ok) {
-        console.error('Error updating task:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error updating task:', error);
-      // Handle the error (e.g., show an error message to the user or revert the change)
-    }
-  };
-
-  const handleDelete = async (taskId) => {
-    try {
-      const response = await fetch(`${apiUrl}/${taskId}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        // Remove the deleted task from the state
-        const updatedTasks = tasks.filter((task) => task.id !== taskId);
-        setTasks(updatedTasks);
-      } else {
-        console.error('Error deleting task:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error deleting task:', error);
-      // Handle the error (e.g., show an error message to the user)
-    }
-  };
   return (
     <Router>
     <Routes>
-      <Route path="/edit/:taskId" element={<EditTask />} />
+      <Route path="/edit/:taskId" element={<EditTask apiUrl={apiUrl} />} />
+      <Route path="/addTask" element={<AddTask apiUrl={apiUrl} />} />
     </Routes>
       <div className="App">
       <h1 className="heading">To Do List</h1>
@@ -94,9 +43,9 @@ function App() {
         </thead>
         <tbody>
           {tasks.map((task) => (
-             
+             console.log(tasks),
             <tr key={task.id}>
-              <td className={task.completed ? 'completed' : ''}> <Link to={`/edit/${task.id}`} > <span style={{ textDecoration: 'underline', cursor: 'pointer' }}>{task.title}</span> 
+              <td className={task.completed ? 'completed' : ''}> <Link to={`/edit/${task.id}`} style={{ textDecoration: 'none', color: 'blue' }}> {task.title}
                 </Link> </td>
               <td className={task.completed ? 'completed' : ''}>{task.description}</td>
               <td className={task.completed ? 'completed' : ''}>
@@ -107,16 +56,17 @@ function App() {
                 <input
                   type="checkbox"
                   checked={task.completed}
-                  onChange={(event) => handleCheckboxToggle(task.id, event.target.checked)}
+                  onChange={(event) => handleCheckboxToggle({taskId:task.id,isChecked:event.target.checked,tasks:tasks,setTasks:setTasks,apiUrl:apiUrl})}
                 />
               </td>
               <td>
-                <button onClick={() => handleDelete(task.id)} className='xbutton'>X</button> 
+                <button onClick={() => handleDelete({taskId:task.id,tasks:tasks,setTasks:setTasks,apiUrl:apiUrl})} className='xbutton'>X</button> 
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <button className='button'> <Link to={`/addTask`} style={{ textDecoration: 'none', color: 'white' }}> Add Task </Link></button>
     </div>
     </Router>
   );

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import '../../App.css';
 import { useParams } from 'react-router-dom';
+import UpdateTodo from './updateService';
 
 const EditTask = () => {
   const { taskId } = useParams();
   
   // Initialize task state with default values
-  const [task, setTask] = useState({
+  const [task, setTask] = useState({  
     title: '',
     description: '',
     dueDate: '',
@@ -50,29 +51,7 @@ const EditTask = () => {
 
     fetchData();
   }, [taskId]);
-  const UpdateTodo = async () => {
-    console.log(task)
-      try {
-        const response = await fetch(`http://localhost:3300/todo/${taskId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(task), 
-      });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        // Check if data has the expected properties before setting state
-         
-      } catch (error) {
-        console.error('Error:', error);
-      }
-  };
-
-
+  
   // Function to handle changes in input fields
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -149,7 +128,7 @@ const EditTask = () => {
         </tbody>
       </table>
       <br />
-      <button onClick={UpdateTodo} className='button'>Update</button>
+      <button onClick={()=>UpdateTodo({taskId:task.id,task:task})} className='button'>Update</button>
     </div>
   );
 };
