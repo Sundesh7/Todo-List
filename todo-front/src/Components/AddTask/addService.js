@@ -12,7 +12,7 @@ const addTodo = async ({task}) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      window.location.href = 'http://localhost:3000/'
+      window.location.href = 'http://localhost:3000/home'
        
     } catch (error) {
       console.error('Error:', error);

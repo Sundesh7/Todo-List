@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { format, parseISO } from 'date-fns';
 import '../../App.css';
 import { useParams } from 'react-router-dom';
 import UpdateTodo from './updateService';
@@ -6,6 +7,7 @@ import UpdateTodo from './updateService';
 const EditTask = () => {
   const { taskId } = useParams();
   
+  console.log('EditTask component rendered',taskId);
   // Initialize task state with default values
   const [task, setTask] = useState({  
     title: '',
@@ -68,6 +70,16 @@ const EditTask = () => {
       });
     }
   };
+let formattedDueDate = '';
+if (task.due_date) {
+  try {
+    formattedDueDate = format(parseISO(task.due_date), 'yyyy-MM-dd');
+  } catch (error) {
+    console.error('Error formatting due_date:', error);
+    // Handle the error or display a message to the user
+    formattedDueDate = ''; // Set to empty string or a default value
+  }
+}
 
   return (
     <div className="App">
@@ -104,7 +116,7 @@ const EditTask = () => {
               <input
                 type="date"
                 name="due_date"
-                value={task.due_date}
+                value={formattedDueDate}
                 onChange={handleInputChange}
               />
             </td>
