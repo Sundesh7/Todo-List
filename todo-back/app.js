@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express()
-const db = require('./db');
 const config = require('./config');
 const port = config.SERVER_PORT;
 const Routes = require('./routes/index');

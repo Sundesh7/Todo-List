@@ -6,10 +6,10 @@ import UpdateTodo from './updateService';
 
 const EditTask = () => {
   const { taskId } = useParams();
-  
-  console.log('EditTask component rendered',taskId);
+
+  console.log('EditTask component rendered', taskId);
   // Initialize task state with default values
-  const [task, setTask] = useState({  
+  const [task, setTask] = useState({
     title: '',
     description: '',
     due_date: '',
@@ -19,13 +19,17 @@ const EditTask = () => {
 
   // Use a separate useEffect for component initialization
   useEffect(() => {
+    const jwtToken = localStorage.getItem('token');
+    console.log(jwtToken)
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+      'Content-Type': 'application/json',
+    };
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:3300/todos/${taskId}`, {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: headers,
         });
 
         if (!response.ok) {
@@ -52,7 +56,7 @@ const EditTask = () => {
 
     fetchData();
   }, [taskId]);
-  
+
   // Function to handle changes in input fields
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -69,16 +73,16 @@ const EditTask = () => {
       });
     }
   };
-let formattedDueDate = '';
-if (task.due_date) {
-  try {
-    formattedDueDate = format(parseISO(task.due_date), 'yyyy-MM-dd');
-  } catch (error) {
-    console.error('Error formatting due_date:', error);
-    // Handle the error or display a message to the user
-    formattedDueDate = ''; // Set to empty string or a default value
+  let formattedDueDate = '';
+  if (task.due_date) {
+    try {
+      formattedDueDate = format(parseISO(task.due_date), 'yyyy-MM-dd');
+    } catch (error) {
+      console.error('Error formatting due_date:', error);
+      // Handle the error or display a message to the user
+      formattedDueDate = ''; // Set to empty string or a default value
+    }
   }
-}
 
   return (
     <div className="App">
@@ -139,7 +143,7 @@ if (task.due_date) {
         </tbody>
       </table>
       <br />
-      <button onClick={()=>UpdateTodo({taskId:task.id,task:task})} className='button'>Update</button>
+      <button onClick={() => UpdateTodo({ taskId: task.id, task: task })} className='button'>Update</button>
     </div>
   );
 };
