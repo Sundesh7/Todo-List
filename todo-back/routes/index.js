@@ -67,15 +67,15 @@ router.get('/todos/:id', async (req, res) => {
       try {
         console.log('body',req.body)
         const obj = req.body;
-        const results =  await handlers.signUp(obj);
+        const userId =  await handlers.signUp(obj);
+        console.log('results',results)
+        const token = jwt.sign({ userId: userId }, jwtSecret, {
+          expiresIn: '1h',
+        });
         console.log('results',results)
         if (results === '23505'){
           res.status(400).json({ message: 'User already exists' })
         }else{
-          const token = jwt.sign({ userId: results.id }, jwtSecret, {
-            expiresIn: '1h',
-          });
-          console.log(token)
           res.status(200).json({ message: 'User added successfully',token:token});
         }
       } catch (error) {
@@ -88,13 +88,13 @@ router.get('/todos/:id', async (req, res) => {
         console.log('body',req.body)
         const obj = req.body;
         const results =  await handlers.signIn(obj);
+        const token = jwt.sign({ userId: results.id }, jwtSecret, {
+          expiresIn: '1h',
+        });
         console.log(token)
         if (results === null){
           res.status(400).json({ message: 'Wrong Email/Password' })
         }else{
-          const token = jwt.sign({ userId: results.id }, jwtSecret, {
-            expiresIn: '1h',
-          });
           console.log(token)
           res.status(200).json({ message: 'User logged in successfully',token:token});
         }
