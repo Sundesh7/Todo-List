@@ -1,20 +1,25 @@
-const { Pool } = require('pg');
+const pgp = require('pg-promise')();
 const config = require('./config');
+const dbConfig = {
+  host: config.db_host,   
+  port: config.db_port,            
+  database: config.db_name,
+  user: config.db_user,   
+  password: config.db_pass,  
+};
 
-// PostgreSQL connection configuration
-const pool = new Pool({
-  connectionString: config.db_pgsql, // PostgreSQL connection string
-});
-
+const db = pgp(dbConfig);
 // Attempt to connect to PostgreSQL and check for errors
-pool.connect((err) => {
-  if (err) {
-    console.error('Error connecting to PostgreSQL:', err);
-    process.exit(1); // Exit the application or handle the error as needed
-  } else {
-    console.log('Connected to PostgreSQL');
-  }
-});
+db.connect()
+  .then(obj => {
+    console.log('Connected to the pgsql database:');
+    obj.done(); // Release the connection pool
+  })
+  .catch(error => {
+    console.error('Error connecting to the database:', error);
+    process.exit(1); // Exit the application on connection error
+  });
+
 
 // Export the PostgreSQL connection pool
-module.exports = pool;
+module.exports = db;

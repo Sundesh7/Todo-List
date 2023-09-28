@@ -32,19 +32,18 @@ const EditTask = () => {
           throw new Error('Network response was not ok');
         }
 
-        const data = await response.json();
-
+        const data = (await response.json()).data;
         // Check if data has the expected properties before setting state
         if (
-          'title' in data[0] &&
-          'description' in data[0] &&
-          'due_date' in data[0] &&
-          'due_time' in data[0] &&
-          'completed' in data[0]
+          'title' in data &&
+          'description' in data &&
+          'due_date' in data &&
+          'due_time' in data &&
+          'completed' in data
         ) {
-          setTask(data[0]);
+          setTask(data);
         } else {
-          console.error('Data from API does not have expected properties:', data[0]);
+          console.error('Data from API does not have expected properties:', data);
         }
       } catch (error) {
         console.error('Error:', error);

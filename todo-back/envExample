@@ -1,0 +1,8 @@
+db_pgsql='postgresql://root:root@localhost:5432/postgres'
+db_name = postgres
+db_port = 5432
+db_user = root
+db_pass = root
+db_host = localhost
+SERVER_PORT = 3300
+jwtSecret=secret

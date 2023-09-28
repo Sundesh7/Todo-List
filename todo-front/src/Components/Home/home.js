@@ -12,17 +12,25 @@ function Home() {
   const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    fetch(apiUrl)
+    const jwtToken = localStorage.getItem('token');
+    console.log(jwtToken)
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+    };  
+    fetch(apiUrl, {
+      headers: headers, // Include the headers in the request
+    })
       .then((response) => response.json())
       .then((data) => {
-        setTasks(data);
+        setTasks(data.data);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
-
+console.log(tasks);
   const scrollToTop = () => {
     window.scrollTo(0, 0); // Scroll to the top of the page
   };
@@ -53,6 +61,7 @@ function Home() {
         </thead>
         <tbody>
           {tasks.map((task) => (
+            
             <tr key={task.id}>
               <td className={task.completed ? 'completed' : ''} onClick={scrollToTop}>
                 <Link to={`/edit/${task.id}`} style={{ textDecoration: 'none', color: 'darkblue' }}>

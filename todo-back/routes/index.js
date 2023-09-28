@@ -1,31 +1,40 @@
 const handlers = require('../Request Handlers/requestHandlers.js')
 const express = require('express');
 const router = express.Router();
-const pool = require('../db');
-
+const jwt = require('jsonwebtoken');
+const { jwtSecret } = require('../config'); // Replace with your secret key
+const verifyToken = require('../middleware/auth.js');
 
 // Define a route handler for the root URL
-router.get('/todos', async (req, res) => {
+router.get('/todos', verifyToken,async (req, res) => {
+  try{
     let result = await handlers.ListTodos();
     console.log(result)
-    res.json(result);
+    res.status(200).json({ message: 'Tasks retrieved successfully', data: result });
+    }catch (error){
+      console.error('Error retrieving tasks:', error);
+      res.status(500).json({ error: 'An error occurred while retrieving the tasks' });
+    }
   });
 
 router.get('/todos/:id', async (req, res) => {
-    let result = await handlers.ListTodo(req.params.id);
-    console.log(result)
-    res.json(result);
+    try{
+      const taskId = req.params.id;
+      let result = await handlers.ListTodo(taskId);
+      res.status(200).json({ message: 'Task retrieved successfully', data: result });
+    }catch(error) {
+      console.error('Error retrieving task:', error);
+      res.status(500).json({ error: 'An error occurred while retrieving the task' });
+    }
   });
   router.put('/todos/:id', async (req, res) => {
       try {
+
         const taskId = req.params.id;
-        //console.log('body',req.body)
         const { completed } = req.body;
-        //console.log(req)
-        //Update the task in the database
-        const updateTaskQuery = 'UPDATE tasks SET completed = $1 WHERE id = $2';
-        await pool.query(updateTaskQuery, [completed, taskId]);
+        await handlers.UpdateCompleted(taskId,completed);
         res.status(200).json({ message: 'Task updated successfully' });
+
       } catch (error) {
         console.error('Error updating task:', error);
         res.status(500).json({ error: 'An error occurred while updating the task' });
@@ -34,12 +43,8 @@ router.get('/todos/:id', async (req, res) => {
     router.put('/todo/:id', async (req, res) => {
       try {
         const taskId = req.params.id;
-        console.log('body',req.body)
-        const { title,description,due_date,due_time,completed } = req.body;
-        console.log(title,description,due_date,due_time,completed)
-        //Update the task in the database
-        const updateTaskQuery = 'UPDATE tasks SET title=$1, completed = $2, due_date = $3, due_time = $4, description = $5 WHERE id = $6';
-        await pool.query(updateTaskQuery, [title,completed,due_date,due_time,description, taskId]);
+        const obj = req.body;
+        await handlers.UpdateTask(obj,taskId);
         res.status(200).json({ message: 'Task updated successfully' });
       } catch (error) {
         console.error('Error updating task:', error);
@@ -49,27 +54,61 @@ router.get('/todos/:id', async (req, res) => {
     router.put('/todo', async (req, res) => {
       try {
         console.log('body',req.body)
-        const { title,description,due_date,
-          due_time,completed } = req.body;
-        console.log(title,description,due_date,due_time,completed)
-        const updateTaskQuery = `
-  INSERT INTO tasks (title, description, due_date, due_time, completed)
-  VALUES ($1, $2, $3, $4, $5)
-`;
-await pool.query(updateTaskQuery, [title, description, due_date, due_time, completed]);
-res.status(200).json({ message: 'Task updated successfully' });
+        const obj = req.body;
+        await handlers.AddTask(obj);
+        res.status(200).json({ message: 'Task updated successfully' });
       } catch (error) {
         console.error('Error updating task:', error);
         res.status(500).json({ error: 'An error occurred while updating the task' });
       }
     });
-  router.delete('/todos/:id',async (req, res) => {
+
+    router.put('/signup', async (req, res) => {
+      try {
+        console.log('body',req.body)
+        const obj = req.body;
+        const results =  await handlers.signUp(obj);
+        console.log('results',results)
+        if (results === '23505'){
+          res.status(400).json({ message: 'User already exists' })
+        }else{
+          const token = jwt.sign({ userId: results.id }, jwtSecret, {
+            expiresIn: '1h',
+          });
+          console.log(token)
+          res.status(200).json({ message: 'User added successfully',token:token});
+        }
+      } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
+    });
+
+    router.put('/signin', async (req, res) => {
+      try {
+        console.log('body',req.body)
+        const obj = req.body;
+        const results =  await handlers.signIn(obj);
+        console.log(token)
+        if (results === null){
+          res.status(400).json({ message: 'Wrong Email/Password' })
+        }else{
+          const token = jwt.sign({ userId: results.id }, jwtSecret, {
+            expiresIn: '1h',
+          });
+          console.log(token)
+          res.status(200).json({ message: 'User logged in successfully',token:token});
+        }
+      }catch (error) {
+        res.status(500).json({ message: 'Internal Server Error' });
+      }
+    });
+
+  router.delete('/todos/:id',verifyToken,async (req, res) => {
     try{
       const todoId = req.params.id;
       let result = await handlers.DeleteTodo(todoId);
       console.log(result)
-      if (result.rowCount === 0) {
-        // The item was not found in the database
+      if (result !== null) {
         return res.status(404).json({ error: 'Task not found' });
       }
       return res.status(204).json({msg:'successfully deleted'});
