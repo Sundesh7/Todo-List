@@ -28,7 +28,6 @@ async function AddTask(obj) {
 }
 async function signUp(obj) {
   const results = await userServices.userRegister(obj);
-  console.log('results rh', results)
   return results;
 }
 async function signIn(obj) {
