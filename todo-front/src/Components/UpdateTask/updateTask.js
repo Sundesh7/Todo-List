@@ -3,12 +3,11 @@ import { format, parseISO } from 'date-fns';
 import '../../App.css';
 import { useParams } from 'react-router-dom';
 import UpdateTodo from './updateService';
+import { bodyStyle } from '../Css/Backround';
 
 const EditTask = () => {
   const { taskId } = useParams();
 
-  console.log('EditTask component rendered', taskId);
-  // Initialize task state with default values
   const [task, setTask] = useState({
     title: '',
     description: '',
@@ -17,10 +16,8 @@ const EditTask = () => {
     completed: true,
   });
 
-  // Use a separate useEffect for component initialization
   useEffect(() => {
     const jwtToken = localStorage.getItem('token');
-    console.log(jwtToken)
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
       'Content-Type': 'application/json',
@@ -37,7 +34,6 @@ const EditTask = () => {
         }
 
         const data = (await response.json()).data;
-        // Check if data has the expected properties before setting state
         if (
           'title' in data &&
           'description' in data &&
@@ -57,10 +53,8 @@ const EditTask = () => {
     fetchData();
   }, [taskId]);
 
-  // Function to handle changes in input fields
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // Handle checkbox separately
     if (type === 'checkbox') {
       setTask({
         ...task,
@@ -79,8 +73,7 @@ const EditTask = () => {
       formattedDueDate = format(parseISO(task.due_date), 'yyyy-MM-dd');
     } catch (error) {
       console.error('Error formatting due_date:', error);
-      // Handle the error or display a message to the user
-      formattedDueDate = ''; // Set to empty string or a default value
+      formattedDueDate = '';
     }
   }
 
@@ -144,6 +137,8 @@ const EditTask = () => {
       </table>
       <br />
       <button onClick={() => UpdateTodo({ taskId: task.id, task: task })} className='button'>Update</button>
+      <div style={bodyStyle}>
+      </div>
     </div>
   );
 };

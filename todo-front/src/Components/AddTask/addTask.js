@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../../App.css';
 import addTodo from './addService';
+import { bodyStyle } from '../Css/Backround';
 
 const AddTask = () => {
 
-  // Initialize task state with default values
   const [task, setTask] = useState({
     title: '',
     description: '',
@@ -13,11 +13,8 @@ const AddTask = () => {
     completed: true,
   });
 
-  // Function to handle changes in input fields
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(name, value, type, checked)
-    // Handle checkbox separately
     if (type === 'checkbox') {
       setTask({
         ...task,
@@ -91,6 +88,8 @@ const AddTask = () => {
       </table>
       <br />
       <button onClick={() => addTodo({ task: task })} className='button' style={{ color: 'white' }}>シ Add</button>
+      <div style={bodyStyle}>
+      </div>
     </div>
   );
 };

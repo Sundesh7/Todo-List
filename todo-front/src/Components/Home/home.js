@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, Link, useParams, useNavigate } from 'react-router-dom'; // Import useParams
+import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import '../../App.css';
 import EditTask from '../UpdateTask/updateTask';
 import handleDelete from '../deleteTask';
 import handleCheckboxToggle from '../checkboxToggle';
 import AddTask from '../AddTask/addTask';
+import { homeStyle, bodyStyle } from '../Css/Backround';
 
 const apiUrl = 'http://localhost:3300/todos';
 
@@ -14,12 +15,11 @@ function Home() {
 
   useEffect(() => {
     const jwtToken = localStorage.getItem('token');
-    console.log(jwtToken)
     const headers = {
       Authorization: `Bearer ${jwtToken}`,
     };
     fetch(apiUrl, {
-      headers: headers, // Include the headers in the request
+      headers: headers,
     })
       .then((response) => response.json())
       .then((data) => {
@@ -29,12 +29,12 @@ function Home() {
         console.error('Error fetching data:', error);
       });
   }, []);
-  console.log(tasks);
   const scrollToTop = () => {
-    window.scrollTo(0, 0); // Scroll to the top of the page
+    window.scrollTo(0, 0);
   };
 
   return (
+
     <div className="App">
       <h1 className="heading">Things To Do シ</h1>
       <Routes>
@@ -89,7 +89,10 @@ function Home() {
       <button className='button' onClick={() => navigate('/addTask')}>
         Add Task
       </button>
+      <div style={bodyStyle}>
+      </div>
     </div>
+
   );
 }
 

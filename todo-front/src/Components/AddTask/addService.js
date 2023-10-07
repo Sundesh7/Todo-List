@@ -1,6 +1,5 @@
 const addTodo = async ({ task }) => {
   const jwtToken = localStorage.getItem('token');
-  console.log(jwtToken)
   const headers = {
     Authorization: `Bearer ${jwtToken}`,
     'Content-Type': 'application/json',
