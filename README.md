@@ -1,4 +1,4 @@
-# To-Do List App
+# Action Planner App
 
 Welcome to the To-Do List app! This project is designed to help you manage your tasks efficiently. It features a robust backend built with Node.js and Express.js, secure user authentication using JSON Web Tokens (JWT), a user-friendly frontend created with React, and efficient data storage using PostgreSQL as a Docker container.
 
